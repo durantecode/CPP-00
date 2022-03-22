@@ -6,7 +6,7 @@
 #    By: ldurante <ldurante@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/21 18:08:49 by ldurante          #+#    #+#              #
-#    Updated: 2022/03/21 18:09:41 by ldurante         ###   ########.fr        #
+#    Updated: 2022/03/22 21:36:26 by ldurante         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ NO_COLOR = \033[0m
 
 # SOURCES & OBJECTS #
 
-SRCS =	main.cpp
+SRCS =	main.cpp phonebook.cpp contact.cpp table.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
