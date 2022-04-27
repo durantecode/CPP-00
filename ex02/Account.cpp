@@ -6,7 +6,7 @@
 /*   By: ldurante <ldurante@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/22 23:58:24 by ldurante          #+#    #+#             */
-/*   Updated: 2022/04/01 15:05:23 by ldurante         ###   ########.fr       */
+/*   Updated: 2022/04/27 17:05:02 by ldurante         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,28 +20,55 @@ int	Account::_totalNbWithdrawals = 0;
 
 Account::Account(int initial_deposit)
 {
-	this->_nbAccounts = 0;
-	this->_totalAmount = 0;
-	this->_totalNbDeposits = 0;
-	this->_totalNbWithdrawals = 0;
-
+	this->_accountIndex = this->_nbAccounts;
+	this->_amount = initial_deposit;
 	this->_totalAmount += initial_deposit;
-	this->_totalNbDeposits++;
+	this->_nbDeposits = 0;
+	this->_nbWithdrawals = 0;
+	Account::_displayTimestamp();
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "amount:" << this->_amount << ";";
+	std::cout << "created" << std::endl;
 	this->_nbAccounts++;
 }
 
 void Account::makeDeposit(int deposit)
 {
-	this->_totalAmount += deposit;
-	this->_totalNbDeposits++;
+	Account::_displayTimestamp();
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "p_amount:" << Account::checkAmount() << ";";
+	if (deposit < 0)
+		std::cout << "deposit:refused" << std::endl;
+	else
+	{
+		std::cout << "deposit:" << deposit << ";";
+		this->_amount += deposit;
+		this->_totalAmount += deposit;
+		std::cout << "amount:" << Account::checkAmount() << ";";
+		this->_totalNbDeposits++;
+		this->_nbDeposits++;
+		std::cout << "nb_deposits:" << this->_nbDeposits << std::endl;
+	}
 }
 
 bool Account::makeWithdrawal(int withdrawal)
 {
-	if (withdrawal < 1)
+	Account::_displayTimestamp();
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "p_amount:" << Account::checkAmount() << ";";
+	std::cout << "withdrawal:";
+	if (Account::checkAmount() - withdrawal < 0 || withdrawal < 1)
+	{
+		std::cout << "refused" << std::endl;
 		return (false);
+	}
+	this->_amount -= withdrawal;
 	this->_totalAmount -= withdrawal;
+	std::cout << withdrawal << ";";
+	std::cout << "amount:" << Account::checkAmount() << ";";
 	this->_totalNbWithdrawals++;
+	this->_nbWithdrawals++;
+	std::cout << "nb_withdrawals:" << this->_nbWithdrawals << std::endl;
 	return (true);
 }
 
@@ -93,4 +120,13 @@ void	Account::_displayTimestamp(void)
 	std::cout << "[19920104_091532] ";
 }
 
-Account::~Account(void) {}
+/* Destructor call order is always reverse of creation order */
+
+Account::~Account(void) 
+{
+	Account::_displayTimestamp();
+	Account::_nbAccounts--;
+	std::cout << "index:" << this->_accountIndex << ";";
+	std::cout << "amount:" << Account::checkAmount() << ";";
+	std::cout << "closed" << std::endl;
+}
